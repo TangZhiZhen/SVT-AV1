@@ -8,10 +8,6 @@
  * Media Patent License 1.0 was not distributed with this source code in the
  * PATENTS file, you can obtain it at www.aomedia.org/license/patent.
  */
-/*
-* Copyright(c) 2019 Intel Corporation
-* SPDX - License - Identifier: BSD - 2 - Clause - Patent
-*/
 
 #ifndef EbSuperRes_h
 #define EbSuperRes_h

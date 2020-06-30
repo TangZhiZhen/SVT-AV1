@@ -1,10 +1,5 @@
 // clang-format off
 /*
-* Copyright(c) 2019 Intel Corporation
-* SPDX - License - Identifier: BSD - 2 - Clause - Patent
-*/
-
-/*
 * Copyright (c) 2016, Alliance for Open Media. All rights reserved
 *
 * This source code is subject to the terms of the BSD 2 Clause License and

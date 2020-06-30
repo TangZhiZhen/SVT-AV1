@@ -9,11 +9,6 @@
  * PATENTS file, you can obtain it at www.aomedia.org/license/patent.
  */
 
-/*
- * Copyright(c) 2019 Netflix, Inc.
- * SPDX - License - Identifier: BSD - 2 - Clause - Patent
- */
-
 /******************************************************************************
  * @file TxfmRef.h
  *

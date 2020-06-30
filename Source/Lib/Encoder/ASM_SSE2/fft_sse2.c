@@ -6,7 +6,7 @@
  * was not distributed with this source code in the LICENSE file, you can
  * obtain it at www.aomedia.org/license/software. If the Alliance for Open
  * Media Patent License 1.0 was not distributed with this source code in the
-s * PATENTS file, you can obtain it at www.aomedia.org/license/patent.
+ * PATENTS file, you can obtain it at www.aomedia.org/license/patent.
  */
 
 #include <xmmintrin.h>

@@ -1804,6 +1804,67 @@ void soft_cycles_reduction_sq_weight(ModeDecisionContext *context_ptr, uint32_t 
 }
 
 #endif
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+const uint8_t count_level2_stage1_cand_count[4/*cand class*/][3/*intra, ref_inter, non_ref*/]=
+{
+    {64, 32, 16},
+    {0, 32, 16},
+    {0, 32, 16},
+    {16, 8 ,4}
+};
+
+static uint8_t get_nics_scaling_level(int8_t enc_mode) {
+    uint8_t nics_scaling_level ;
+    if (enc_mode <= ENC_MR)
+        nics_scaling_level = 0;
+    else if (enc_mode <= ENC_M0)
+        nics_scaling_level = 1;
+    else if (enc_mode <= ENC_M1)
+        nics_scaling_level = 4;
+    else if (enc_mode <= ENC_M2)
+        nics_scaling_level = 6;
+    else if (enc_mode <= ENC_M4)
+        nics_scaling_level = 8;
+    else
+        nics_scaling_level = 9;
+
+    return nics_scaling_level;
+}
+
+static void scale_nics(PictureControlSet *pcs_ptr, ModeDecisionContext *context_ptr) {
+    uint32_t min_nics = pcs_ptr->parent_pcs_ptr->is_used_as_reference_flag ? 2 : 1;
+    uint8_t nics_scaling_level = get_nics_scaling_level(pcs_ptr->enc_mode);
+    uint32_t scale_num   = nics_scale_factor[nics_scaling_level][0];
+    uint32_t scale_denum = nics_scale_factor[nics_scaling_level][1];
+
+    // no NIC setting should be done beyond this point
+    for (uint8_t cidx = 0; cidx < CAND_CLASS_TOTAL; ++cidx) {
+        context_ptr->md_stage_1_count[cidx] = MAX(min_nics,
+            DIVIDE_AND_ROUND(context_ptr->md_stage_1_count[cidx] * scale_num, scale_denum));
+        context_ptr->md_stage_2_count[cidx] = MAX(min_nics,
+            DIVIDE_AND_ROUND(context_ptr->md_stage_2_count[cidx] * scale_num, scale_denum));
+    }
+}
+
+uint32_t get_max_buffer_count(int8_t enc_mode) {
+    uint8_t nics_scaling_level = get_nics_scaling_level(enc_mode);
+    uint32_t scale_num   = nics_scale_factor[nics_scaling_level][0];
+    uint32_t scale_denum = nics_scale_factor[nics_scaling_level][1];
+	uint32_t max_cand_num[3] = {0};
+    uint32_t max_buffer_count = 0;
+    for (uint8_t t = 0; t <= 2; t++) {
+        uint32_t min_nics = t <= 1 ? 2 : 1; //if used as ref
+        for (uint8_t cidx = 0; cidx < CAND_CLASS_TOTAL; ++cidx) {
+            max_cand_num[t] += MAX(min_nics,
+                    DIVIDE_AND_ROUND(count_level2_stage1_cand_count[cidx][t] * scale_num, scale_denum));
+        }
+        if (max_cand_num[t] > max_buffer_count)
+            max_buffer_count = max_cand_num[t];
+    }
+    max_buffer_count += CAND_CLASS_TOTAL;
+    return max_buffer_count;
+}
+#else
 void scale_nics(PictureControlSet *pcs_ptr, ModeDecisionContext *context_ptr) {
     // minimum nics allowed
     uint32_t min_nics = pcs_ptr->parent_pcs_ptr->is_used_as_reference_flag ? 2 : 1;
@@ -1978,6 +2039,7 @@ void scale_nics(PictureControlSet *pcs_ptr, ModeDecisionContext *context_ptr) {
     }
 }
 #endif
+#endif
 
 
 void set_md_stage_counts(PictureControlSet *pcs_ptr, ModeDecisionContext *context_ptr,
@@ -2097,6 +2159,7 @@ void set_md_stage_counts(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
 #define NIC_S11 4
 #define NIC_S4_5 5
 #define NIC_C4 6
+
 
 #if REMOVE_OLD_NICS
         uint8_t nics_level = NIC_C4;
@@ -2264,6 +2327,14 @@ void set_md_stage_counts(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
             // Step 2: set md_stage count
 #if CLASS_MERGING
 #if NICS_CLEANUP
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+                for (uint8_t cidx = 0; cidx < CAND_CLASS_TOTAL; ++cidx) {
+                    context_ptr->md_stage_1_count[cidx] =
+                        (pcs_ptr->slice_type == I_SLICE) ? count_level2_stage1_cand_count[cidx][0] :
+                        (pcs_ptr->parent_pcs_ptr->is_used_as_reference_flag) ? count_level2_stage1_cand_count[cidx][1] :
+                        count_level2_stage1_cand_count[cidx][2];
+                }
+#else
                 context_ptr->md_stage_1_count[CAND_CLASS_0] =
                     (pcs_ptr->slice_type == I_SLICE) ? 64 :
                     (pcs_ptr->parent_pcs_ptr->is_used_as_reference_flag) ? 32 : 16;
@@ -2276,6 +2347,7 @@ void set_md_stage_counts(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
                 context_ptr->md_stage_1_count[CAND_CLASS_3] =
                     (pcs_ptr->slice_type == I_SLICE) ? 16 :
                     (pcs_ptr->parent_pcs_ptr->is_used_as_reference_flag) ? 8 : 4;
+#endif
 #else
             context_ptr->md_stage_1_count[CAND_CLASS_0] =
                 (pcs_ptr->slice_type == I_SLICE)

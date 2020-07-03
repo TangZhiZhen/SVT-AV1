@@ -127,6 +127,9 @@ EbErrorType mode_decision_context_ctor(ModeDecisionContext *context_ptr, EbColor
 #if SB64_MEM_OPT
                                        uint8_t sb_size,
 #endif
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+                                       int8_t enc_mode,
+#endif
                                        EbFifo *mode_decision_configuration_input_fifo_ptr,
                                        EbFifo *mode_decision_output_fifo_ptr,
                                        uint8_t enable_hbd_mode_decision, uint8_t cfg_palette) {
@@ -542,7 +545,12 @@ EbErrorType mode_decision_context_ctor(ModeDecisionContext *context_ptr, EbColor
     // Candidate Buffers
     EB_ALLOC_PTR_ARRAY(context_ptr->candidate_buffer_ptr_array, MAX_NFL_BUFF);
 #if MEM_OPT_UV_MODE
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+    uint32_t max_candidate_buffer_count = get_max_buffer_count(enc_mode);
+    for (buffer_index = 0; buffer_index < max_candidate_buffer_count; ++buffer_index) {
+#else
     for (buffer_index = 0; buffer_index < MAX_NFL_BUFF_Y; ++buffer_index) {
+#endif
         EB_NEW(context_ptr->candidate_buffer_ptr_array[buffer_index],
                mode_decision_candidate_buffer_ctor,
                context_ptr->hbd_mode_decision ? EB_10BIT : EB_8BIT,

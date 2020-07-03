@@ -881,6 +881,9 @@ extern EbErrorType mode_decision_context_ctor(ModeDecisionContext *context_ptr,
 #if SB64_MEM_OPT
                                               uint8_t sb_size,
 #endif
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+                                              int8_t enc_mode,
+#endif
                                               EbFifo *mode_decision_configuration_input_fifo_ptr,
                                               EbFifo *mode_decision_output_fifo_ptr,
                                               uint8_t enable_hbd_mode_decision,
@@ -915,6 +918,9 @@ extern void reset_mode_decision(SequenceControlSet *scs_ptr, ModeDecisionContext
 
 extern void mode_decision_configure_sb(ModeDecisionContext *context_ptr, PictureControlSet *pcs_ptr,
                                        uint8_t sb_qp);
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+extern uint32_t get_max_buffer_count(int8_t enc_mode);
+#endif
 #if !REMOVE_UNUSED_CODE_PH2
 extern void cfl_rd_pick_alpha(PictureControlSet *          pcs_ptr,
                               ModeDecisionCandidateBuffer *candidate_buffer, SuperBlock *sb_ptr,

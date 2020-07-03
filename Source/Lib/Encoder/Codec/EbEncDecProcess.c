@@ -173,6 +173,9 @@ EbErrorType enc_dec_context_ctor(EbThreadContext *  thread_context_ptr,
            mode_decision_context_ctor,
            color_format,
            static_config->super_block_size,
+#if MEM_OPT_FAST_MODE_CAND_NUMBER
+           static_config->enc_mode,
+#endif
            0,
            0,
            enable_hbd_mode_decision == DEFAULT ? 2 : enable_hbd_mode_decision ,

@@ -75,10 +75,10 @@ void global_motion_estimation(PictureParentControlSet *pcs_ptr, MeContext *conte
                                            : list_index == REF_LIST_0 ? pcs_ptr->ref_list0_count
                                                                       : pcs_ptr->ref_list1_count;
 #endif
-
+#if !GLOBAL_SEARCH_ALL_REF
         // Limit the global motion search to the first frame types of ref lists
         num_of_ref_pic_to_search = MIN(num_of_ref_pic_to_search, 1);
-
+#endif
         // Ref Picture Loop
         for (uint32_t ref_pic_index = 0; ref_pic_index < num_of_ref_pic_to_search;
              ++ref_pic_index) {
@@ -122,7 +122,7 @@ void global_motion_estimation(PictureParentControlSet *pcs_ptr, MeContext *conte
                                   &pcs_ptr->global_motion_estimation[list_index][ref_pic_index],
                                   pcs_ptr->frm_hdr.allow_high_precision_mv);
         }
-
+#if !SHUT_GLOBAL_ID
 #if GM_LIST1
         if (context_ptr->gm_identiy_exit) {
             if (list_index == 0) {
@@ -133,7 +133,7 @@ void global_motion_estimation(PictureParentControlSet *pcs_ptr, MeContext *conte
             }
         }
 #endif
-
+#endif
     }
 }
 

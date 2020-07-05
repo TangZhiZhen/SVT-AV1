@@ -5055,7 +5055,7 @@ GLOBALMV
                 }
             }
 
-#if GLOBAL_SEARCH_ALL_REF_LIST_1
+#if 0
             for (unsigned list_ref_index_l1 = 0; list_ref_index_l1 < pcs_ptr->parent_pcs_ptr->mrp_ctrls.ref_list1_count_try; ++list_ref_index_l1) {
                 uint8_t to_inject_ref_type =
                     svt_get_ref_frame_type(REF_LIST_1, list_ref_index_l1);

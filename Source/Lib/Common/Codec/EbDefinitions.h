@@ -602,13 +602,11 @@ extern "C" {
 #define MEM_OPT_UV_MODE     1 // Memory optimization for independant uv mode
 
 ///////////////////////////////////////
-//#define SHUT_GLOBAL 0
-//#define GM_MV_BUG_FIX  1
-//#define SHUT_GLOBAL_ID 1
-//#define GLOBAL_SEARCH_ALL_REF 1
-//#define GLOBAL_SEARCH_ALL_REF_LIST_1 0
-//#define GLOBAL_SEARCH_ALL_BIPRED 0
-#if 1
+#define SHUT_GLOBAL           0
+#define GM_MV_BUG_FIX         0
+#define SHUT_GLOBAL_ID        0
+#define GLOBAL_SEARCH_ALL_REF 0
+#if 0
 #define ME_USE_NSC_SETTING         0 // 
 #define FIX_HIGH_MOTION            1
 #define FIX_HIGH_MOTION_NSQ        1

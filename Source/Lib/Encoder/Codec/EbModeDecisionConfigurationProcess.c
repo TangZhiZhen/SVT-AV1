@@ -133,7 +133,7 @@ void set_global_motion_field(PictureControlSet *pcs_ptr) {
     //Update MV
     PictureParentControlSet *parent_pcs_ptr = pcs_ptr->parent_pcs_ptr;
 
-#if GLOBAL_SEARCH_ALL_REF
+#if 0//GLOBAL_SEARCH_ALL_REF
     for (frame_index = INTRA_FRAME; frame_index <= ALTREF_FRAME; ++frame_index) {
 
             if (parent_pcs_ptr

@@ -135,46 +135,47 @@ void set_global_motion_field(PictureControlSet *pcs_ptr) {
 
 #if GLOBAL_SEARCH_ALL_REF
     for (frame_index = INTRA_FRAME; frame_index <= ALTREF_FRAME; ++frame_index) {
-    if (parent_pcs_ptr
-        ->is_global_motion[get_list_idx(frame_index)][get_ref_frame_idx(frame_index)])
-        parent_pcs_ptr->global_motion[frame_index] =
-        parent_pcs_ptr->global_motion_estimation[get_list_idx(frame_index)]
-        [get_ref_frame_idx(frame_index)];
 
-    // Upscale the translation parameters by 2, because the search is done on a down-sampled
-    // version of the source picture (with a down-sampling factor of 2 in each dimension).
+            if (parent_pcs_ptr
+                ->is_global_motion[get_list_idx(frame_index)][get_ref_frame_idx(frame_index)])
+                parent_pcs_ptr->global_motion[frame_index] =
+                parent_pcs_ptr->global_motion_estimation[get_list_idx(frame_index)]
+                [get_ref_frame_idx(frame_index)];
+
+            // Upscale the translation parameters by 2, because the search is done on a down-sampled
+            // version of the source picture (with a down-sampling factor of 2 in each dimension).
 #if GM_DOWN_16
-    if (parent_pcs_ptr->gm_level == GM_DOWN16) {
-        parent_pcs_ptr->global_motion[frame_index].wmmat[0] *= 4;
-        parent_pcs_ptr->global_motion[frame_index].wmmat[1] *= 4;
-        parent_pcs_ptr->global_motion[frame_index].wmmat[0] =
-            (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[0],
-                GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
-                GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
-        parent_pcs_ptr->global_motion[frame_index].wmmat[1] =
-            (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[1],
-                GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
-                GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
-    }
-    else if (parent_pcs_ptr->gm_level == GM_DOWN) {
+            if (parent_pcs_ptr->gm_level == GM_DOWN16) {
+                parent_pcs_ptr->global_motion[frame_index].wmmat[0] *= 4;
+                parent_pcs_ptr->global_motion[frame_index].wmmat[1] *= 4;
+                parent_pcs_ptr->global_motion[frame_index].wmmat[0] =
+                    (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[0],
+                        GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
+                        GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
+                parent_pcs_ptr->global_motion[frame_index].wmmat[1] =
+                    (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[1],
+                        GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
+                        GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
+            }
+            else if (parent_pcs_ptr->gm_level == GM_DOWN) {
 #else
-    if (parent_pcs_ptr->gm_level == GM_DOWN) {
+            if (parent_pcs_ptr->gm_level == GM_DOWN) {
 #endif
-        parent_pcs_ptr->global_motion[frame_index].wmmat[0] *= 2;
-        parent_pcs_ptr->global_motion[frame_index].wmmat[1] *= 2;
+                parent_pcs_ptr->global_motion[frame_index].wmmat[0] *= 2;
+                parent_pcs_ptr->global_motion[frame_index].wmmat[1] *= 2;
 #if GM_BUG_FIX
-        parent_pcs_ptr->global_motion[frame_index].wmmat[0] =
-            (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[0],
-                GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
-                GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
-        parent_pcs_ptr->global_motion[frame_index].wmmat[1] =
-            (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[1],
-                GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
-                GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
-
+                parent_pcs_ptr->global_motion[frame_index].wmmat[0] =
+                    (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[0],
+                        GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
+                        GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
+                parent_pcs_ptr->global_motion[frame_index].wmmat[1] =
+                    (int32_t)clamp(parent_pcs_ptr->global_motion[frame_index].wmmat[1],
+                        GM_TRANS_MIN * GM_TRANS_DECODE_FACTOR,
+                        GM_TRANS_MAX * GM_TRANS_DECODE_FACTOR);
 #endif
-    }
-    }
+            }
+    
+        }
 #else
 #if GM_DOWN_16
     if (parent_pcs_ptr->gm_level <= GM_DOWN16) {

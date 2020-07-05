@@ -606,6 +606,8 @@ extern "C" {
 //#define GM_MV_BUG_FIX  1
 //#define SHUT_GLOBAL_ID 1
 //#define GLOBAL_SEARCH_ALL_REF 1
+//#define GLOBAL_SEARCH_ALL_REF_LIST_1 0
+//#define GLOBAL_SEARCH_ALL_BIPRED 0
 #if 1
 #define ME_USE_NSC_SETTING         0 // 
 #define FIX_HIGH_MOTION            1

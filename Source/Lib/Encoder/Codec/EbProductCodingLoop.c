@@ -5315,9 +5315,8 @@ void md_sq_motion_search(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
         uint32_t fast_lambda = context_ptr->hbd_mode_decision ?
             context_ptr->fast_lambda_md[EB_10_BIT_MD] :
             context_ptr->fast_lambda_md[EB_8_BIT_MD];
-#if 1//!HEAVY_SEARCH
+
         if (RDCOST(fast_lambda, 16, pa_me_distortion) > RDCOST(fast_lambda, 16, 5 * context_ptr->blk_geom->bwidth * context_ptr->blk_geom->bheight))
-#endif
         {
             {
                 EbReferenceObject *ref_obj = (EbReferenceObject *)pcs_ptr->ref_pic_ptr_array[list_idx][ref_idx]->object_ptr;
@@ -5403,12 +5402,14 @@ void md_sq_motion_search(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
     }
 #endif
        
-#if HEAVY_SEARCH
+#if 0//HEAVY_SEARCH
     search_area_multiplier = 3;
 #endif
-
+#if HEAVY_SEARCH
+    uint8_t do_not_use_sparse_search = 1;
+#else
     uint8_t do_not_use_sparse_search = 0;
-
+#endif
 #if SPARSE_VARIANCE
     if (context_ptr->source_variance >= 2500)
         do_not_use_sparse_search = 1;

@@ -4981,12 +4981,6 @@ GLOBALMV
                     for (inter_type = 0; inter_type < tot_inter_types; inter_type++) {
                         cand_array[cand_total_cnt].type = INTER_MODE;
 
-                        cand_array[cand_total_cnt].distortion_ready = 0;
-                        cand_array[cand_total_cnt].use_intrabc = 0;
-
-                        cand_array[cand_total_cnt].merge_flag = EB_FALSE;
-                        cand_array[cand_total_cnt].prediction_direction[0] = (EbPredDirection)0;
-
                         cand_array[cand_total_cnt].inter_mode = GLOBALMV;
                         cand_array[cand_total_cnt].pred_mode = GLOBALMV;
                         cand_array[cand_total_cnt].motion_mode = params_l0->wmtype > TRANSLATION
@@ -5097,12 +5091,6 @@ GLOBALMV
 
                     for (inter_type = 0; inter_type < tot_inter_types; inter_type++) {
                         cand_array[cand_total_cnt].type = INTER_MODE;
-
-                        cand_array[cand_total_cnt].distortion_ready = 0;
-                        cand_array[cand_total_cnt].use_intrabc = 0;
-
-                        cand_array[cand_total_cnt].merge_flag = EB_FALSE;
-                        cand_array[cand_total_cnt].prediction_direction[0] = (EbPredDirection)0;
 
                         cand_array[cand_total_cnt].inter_mode = GLOBALMV;
                         cand_array[cand_total_cnt].pred_mode = GLOBALMV;

@@ -607,7 +607,7 @@ extern "C" {
 #define SHUT_GLOBAL_ID        0
 #define GLOBAL_SEARCH_ALL_REF 0
 
-#define SUPER_FAST_ME         0
+#define SUPER_FAST_ME         1
 #if 0
 #define ME_USE_NSC_SETTING         0 // 
 #define FIX_HIGH_MOTION            1

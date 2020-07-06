@@ -5405,7 +5405,7 @@ void md_sq_motion_search(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
 #if 0//HEAVY_SEARCH
     search_area_multiplier = 3;
 #endif
-#if HEAVY_SEARCH
+#if 0//HEAVY_SEARCH
     uint8_t do_not_use_sparse_search = 1;
 #else
     uint8_t do_not_use_sparse_search = 0;

@@ -1907,11 +1907,11 @@ void md_sq_motion_search_controls(ModeDecisionContext *mdctxt, uint8_t md_sq_mv_
         md_sq_motion_search_ctrls->sparse_search_level_0_enabled          =   1;
         md_sq_motion_search_ctrls->sparse_search_level_0_step             =   4;
 
-        md_sq_motion_search_ctrls->sparse_search_level_0_area_width       =  50;
-        md_sq_motion_search_ctrls->sparse_search_level_0_area_height      =  50;
+        md_sq_motion_search_ctrls->sparse_search_level_0_area_width       =  25;
+        md_sq_motion_search_ctrls->sparse_search_level_0_area_height      =  25;
 
-        md_sq_motion_search_ctrls->max_sparse_search_level_0_area_width   = 500;
-        md_sq_motion_search_ctrls->max_sparse_search_level_0_area_height  = 500;
+        md_sq_motion_search_ctrls->max_sparse_search_level_0_area_width   = 250;
+        md_sq_motion_search_ctrls->max_sparse_search_level_0_area_height  = 250;
 
         md_sq_motion_search_ctrls->sparse_search_level_1_enabled          =   1;
         md_sq_motion_search_ctrls->sparse_search_level_1_step             =   2;

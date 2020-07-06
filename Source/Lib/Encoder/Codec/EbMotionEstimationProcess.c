@@ -246,8 +246,13 @@ void* set_me_hme_params_oq(
 #else
             else if (pcs_ptr->enc_mode <= ENC_M7) {
 #endif
+#if SUPER_FAST_ME
+                me_context_ptr->search_area_width = me_context_ptr->search_area_height = 37;
+                me_context_ptr->max_me_search_width = me_context_ptr->max_me_search_height = 175;
+#else
                 me_context_ptr->search_area_width = me_context_ptr->search_area_height = 75;
                 me_context_ptr->max_me_search_width = me_context_ptr->max_me_search_height = 350;
+#endif
             }
 #else
 #if JUNE17_ADOPTIONS
@@ -421,8 +426,13 @@ void* set_me_hme_params_oq(
         me_context_ptr->search_area_width = me_context_ptr->search_area_height = 25;
         me_context_ptr->max_me_search_width = me_context_ptr->max_me_search_height = 50;
 #else
+#if SUPER_FAST_ME
+    me_context_ptr->search_area_width = me_context_ptr->search_area_height = 8;
+    me_context_ptr->max_me_search_width = me_context_ptr->max_me_search_height = 32;
+#else
         me_context_ptr->search_area_width = me_context_ptr->search_area_height = 16;
         me_context_ptr->max_me_search_width = me_context_ptr->max_me_search_height = 64;
+#endif
 #endif
     }
 #else

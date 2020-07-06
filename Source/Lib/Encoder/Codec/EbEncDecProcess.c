@@ -1899,12 +1899,11 @@ void md_sq_motion_search_controls(ModeDecisionContext *mdctxt, uint8_t md_sq_mv_
         md_sq_motion_search_ctrls->enabled = 1;
         md_sq_motion_search_ctrls->use_ssd = 0;
 
-#if ME_USE_NSC_SETTING || HEAVY_SEARCH
+#if ME_USE_NSC_SETTING
         md_sq_motion_search_ctrls->size_colocated_area                    =   8;
 #else
         md_sq_motion_search_ctrls->size_colocated_area                    =   2;
 #endif
-
         md_sq_motion_search_ctrls->sparse_search_level_0_enabled          =   1;
         md_sq_motion_search_ctrls->sparse_search_level_0_step             =   4;
 

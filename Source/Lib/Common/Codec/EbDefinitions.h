@@ -607,8 +607,8 @@ extern "C" {
 #define SHUT_GLOBAL_ID        0
 #define GLOBAL_SEARCH_ALL_REF 0
 
-#define SUPER_FAST_ME         1
-#if 0
+#define SUPER_FAST_ME         0
+#if 1
 #define ME_USE_NSC_SETTING         0 // 
 #define FIX_HIGH_MOTION            1
 #define FIX_HIGH_MOTION_NSQ        1
@@ -619,12 +619,12 @@ extern "C" {
 #if ME_USE_NSC_SETTING
 #define SPARSE_VARIANCE            1
 #endif
-#define FURTHER_TUNING             0
+#define FURTHER_TUNING             1
 
 #define MVP_DISTORTION             0
 #define CHECK_DC_DISTORTION        0
 
-#define HEAVY_SEARCH 1
+#define HEAVY_SEARCH 0
 #if HEAVY_SEARCH
 #define SPARSE_VARIANCE            0
 #endif

@@ -5429,8 +5429,8 @@ void md_sq_motion_search(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
 #else
         if (context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_enabled) {
 #endif
-            uint16_t sparse_search_level_0_area_width = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_area_width  * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_0_area_width);
-            uint16_t sparse_search_level_0_area_height = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_area_height * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_0_area_height);
+            uint16_t sparse_search_level_0_area_width = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_multiplier  * context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_area_width  * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_0_area_width);
+            uint16_t sparse_search_level_0_area_height = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_multiplier  * context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_area_height * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_0_area_height);
             uint8_t sparse_search_level_0_step = do_not_use_sparse_search ? 1 : context_ptr->md_sq_motion_search_ctrls.sparse_search_level_0_step;
 
             // Derive 
@@ -5478,8 +5478,8 @@ void md_sq_motion_search(PictureControlSet *pcs_ptr, ModeDecisionContext *contex
 #else
         if (context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_enabled) {
 #endif
-            uint16_t sparse_search_level_1_area_width = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_area_width  * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_1_area_width);
-            uint16_t sparse_search_level_1_area_height = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_area_height * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_1_area_height);
+            uint16_t sparse_search_level_1_area_width = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_multiplier * context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_area_width  * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_1_area_width);
+            uint16_t sparse_search_level_1_area_height = MIN((context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_multiplier * context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_area_height * search_area_multiplier * dist), context_ptr->md_sq_motion_search_ctrls.max_sparse_search_level_1_area_height);
 
             // Derive 
             int16_t search_position_start_x  = -(((sparse_search_level_1_area_width  >> 1) / context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_step) * context_ptr->md_sq_motion_search_ctrls.sparse_search_level_1_step);

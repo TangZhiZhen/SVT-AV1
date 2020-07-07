@@ -605,20 +605,17 @@ extern "C" {
 #define SHUT_GLOBAL           0
 #define GM_MV_BUG_FIX         0
 #define SHUT_GLOBAL_ID        0
-#define GLOBAL_SEARCH_ALL_REF 1
+#define GLOBAL_SEARCH_ALL_REF 0
+#define INJECT_GLOBAL_CAND    0
 
 #define SUPER_FAST_ME         0
-#if 0
-#define ME_USE_NSC_SETTING         0 // 
+#if 1
 #define FIX_HIGH_MOTION            1
 #define FIX_HIGH_MOTION_NSQ        1
 #define FIX_INTRA_4X4              1
 
 #define OPTIMIZE_SPARSE_SEARCH     1
 #define FIX_TOP_N_SEARCH           1
-#if ME_USE_NSC_SETTING
-#define SPARSE_VARIANCE            1
-#endif
 #define FURTHER_TUNING             1
 
 #define MVP_DISTORTION             0

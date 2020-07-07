@@ -323,6 +323,7 @@ typedef struct MdSqMotionSearchCtrls {
     uint16_t sparse_search_level_0_area_height;      // Sparse search area height
     uint16_t max_sparse_search_level_0_area_width;   // Max Sparse search area width
     uint16_t max_sparse_search_level_0_area_height;  // Max Sparse search area height
+    int16_t sparse_search_level_0_multiplier;        // search area multiplier
 
     uint8_t  sparse_search_level_1_enabled;          // 0: OFF; 1: ON
     uint8_t  sparse_search_level_1_step;             // Sparse search step
@@ -330,6 +331,7 @@ typedef struct MdSqMotionSearchCtrls {
     uint16_t sparse_search_level_1_area_height;      // Sparse search area height
     uint16_t max_sparse_search_level_1_area_width;   // Max Sparse search area width
     uint16_t max_sparse_search_level_1_area_height;  // Max Sparse search area height
+    int16_t sparse_search_level_1_multiplier;        // search area multiplier
 
     uint8_t  sparse_search_level_2_enabled;          // 0: OFF; 1: ON
     uint8_t  sparse_search_level_2_step;            // Sparse search step

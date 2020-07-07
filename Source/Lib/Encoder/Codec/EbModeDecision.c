@@ -4929,6 +4929,22 @@ void inject_inter_candidates(PictureControlSet *pcs_ptr, ModeDecisionContext *co
                           &cand_total_cnt);
 
     if (context_ptr->global_mv_injection) {
+#if INJECT_GLOBAL_CAND
+
+
+        for (uint32_t ref_it = 0; ref_it < pcs_ptr->parent_pcs_ptr->tot_ref_frame_types; ++ref_it) {
+            MvReferenceFrame ref_pair = pcs_ptr->parent_pcs_ptr->ref_frame_type_arr[ref_it];
+            MvReferenceFrame rf[2];
+            av1_set_ref_frame(rf, ref_pair);
+
+            if (rf[1] == NONE_FRAME) {
+                MvReferenceFrame frame_type = rf[0];
+                uint8_t          list_idx = get_list_idx(rf[0]);
+                uint8_t          ref_idx = get_ref_frame_idx(rf[0]);
+                printf("");
+            }
+        }
+#else
 #if GM_DOWN_16
         if (pcs_ptr->parent_pcs_ptr->gm_level <= GM_DOWN16) {
 #else
@@ -5805,6 +5821,7 @@ GLOBALMV
                 }
             }
         }
+#endif
     }
 
     // Warped Motion

@@ -120,11 +120,7 @@ void* set_me_hme_params_oq(
 #if REFACTOR_ME_HME
     // Set the minimum ME search area
 #if UNIFY_SC_NSC
-#if ME_USE_NSC_SETTING
-    if(0)
-#else
     if (pcs_ptr->sc_content_detected)
-#endif
 #else
     if (sc_content_detected)
 #endif

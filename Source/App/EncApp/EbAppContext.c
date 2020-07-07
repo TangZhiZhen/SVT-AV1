@@ -195,6 +195,18 @@ EbErrorType copy_configuration_parameters(EbConfig *config, EbAppContext *callba
     callback_data->eb_enc_parameters.superres_qthres = config->superres_qthres;
     // --- end: SUPER-RESOLUTION SUPPORT
 
+    if ((config->thread_count > 0) && (config->thread_count < EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_FACTOR)) {
+        callback_data->eb_enc_parameters.thread_count = EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_FACTOR;
+        printf("\nWarning: the thread count %u is set too small and is forced to the min value %u\n",
+                config->thread_count, callback_data->eb_enc_parameters.thread_count);
+    } else {
+        callback_data->eb_enc_parameters.thread_count = (config->thread_count + EB_THREAD_COUNT_MIN_CORE - 1)
+                                                        / EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_MIN_CORE;
+        if (callback_data->eb_enc_parameters.thread_count != config->thread_count)
+            printf("\nInformation: the thread count %u is rounded to %u\n",
+                    config->thread_count, callback_data->eb_enc_parameters.thread_count);
+    }
+
     for (hme_region_index = 0;
          hme_region_index < callback_data->eb_enc_parameters.number_hme_search_region_in_width;
          ++hme_region_index) {

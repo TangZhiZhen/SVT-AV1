@@ -20,6 +20,9 @@ extern "C" {
 #define MAX_HIERARCHICAL_LEVEL 6
 #define REF_LIST_MAX_DEPTH 4
 
+#define EB_THREAD_COUNT_MIN_CORE 48
+#define EB_THREAD_COUNT_FACTOR 2
+
 #define MAX_ENC_PRESET 8
 
 #define DEFAULT -1
@@ -559,6 +562,9 @@ typedef struct EbSvtAv1EncConfiguration {
     * 0: pinned
     * default 1 */
     uint32_t unpin;
+
+    /* The total number of working threads to create. */
+    uint32_t thread_count;
 
     /* Target socket to run on. For dual socket systems, this can specify which
      * socket the encoder runs on.

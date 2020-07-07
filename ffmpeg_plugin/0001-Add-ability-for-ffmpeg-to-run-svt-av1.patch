@@ -13,8 +13,8 @@ Signed-off-by: Xu Guangxin <guangxin.xu@intel.com>
  configure               |   4 +
  libavcodec/Makefile     |   1 +
  libavcodec/allcodecs.c  |   1 +
- libavcodec/libsvt_av1.c | 583 ++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 589 insertions(+)
+ libavcodec/libsvt_av1.c | 597 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 603 insertions(+)
  create mode 100644 libavcodec/libsvt_av1.c
 
 diff --git a/configure b/configure
@@ -82,7 +82,7 @@ new file mode 100644
 index 0000000000..541ba228fa
 --- /dev/null
 +++ b/libavcodec/libsvt_av1.c
-@@ -0,0 +1,583 @@
+@@ -0,0 +1,597 @@
 +
 +/*
 +* Scalable Video Technology for AV1 encoder library plugin
@@ -319,6 +319,20 @@ index 0000000000..541ba228fa
 +
 +    param->tile_columns = svt_enc->tile_columns;
 +    param->tile_rows = svt_enc->tile_rows;
++
++    if ((avctx->thread_count > 0) &&
++        (avctx->thread_count < (EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_FACTOR))) {
++        param->thread_count = EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_FACTOR;
++        av_log(avctx, AV_LOG_WARNING, "Thread count is set too small, forced to %"PRId32"\n",
++               param->thread_count);
++    } else if (avctx->thread_count % EB_THREAD_COUNT_MIN_CORE) {
++        param->thread_count = (avctx->thread_count + EB_THREAD_COUNT_MIN_CORE - 1)
++                              / EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_MIN_CORE;
++        av_log(avctx, AV_LOG_DEBUG, "Thread count is rounded to %"PRId32"\n",
++               param->thread_count);
++    } else {
++        param->thread_count = avctx->thread_count;
++    }
 +
 +    return 0;
 +}

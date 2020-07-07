@@ -371,6 +371,8 @@ EbErrorType load_default_buffer_configuration_settings(
     EbErrorType           return_error = EB_ErrorNone;
     unsigned int lp_count   = get_num_processors();
     unsigned int core_count = lp_count;
+    unsigned int total_thread_count;
+    unsigned int thread_unit;
 #if defined(_WIN32) || defined(__linux__)
     if (scs_ptr->static_config.target_socket != -1)
         core_count /= num_groups;
@@ -392,6 +394,22 @@ EbErrorType load_default_buffer_configuration_settings(
         scs_ptr->static_config.logical_processors > lp_count / num_groups)
         core_count = lp_count;
 #endif
+    // Thread count computation
+    if (scs_ptr->static_config.thread_count != 0)
+        total_thread_count = scs_ptr->static_config.thread_count;
+    else
+        total_thread_count = core_count * EB_THREAD_COUNT_FACTOR;
+
+    if (total_thread_count < EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_FACTOR) {
+        core_count = EB_THREAD_COUNT_MIN_CORE;
+        total_thread_count = core_count * EB_THREAD_COUNT_FACTOR;
+    }
+
+    if (total_thread_count % EB_THREAD_COUNT_MIN_CORE) {
+        total_thread_count = (total_thread_count + EB_THREAD_COUNT_MIN_CORE - 1)
+                             / EB_THREAD_COUNT_MIN_CORE * EB_THREAD_COUNT_MIN_CORE;
+    }
+    thread_unit = total_thread_count / EB_THREAD_COUNT_MIN_CORE;
     int32_t return_ppcs = set_parent_pcs(&scs_ptr->static_config,
         core_count, scs_ptr->input_resolution);
     if (return_ppcs == -1)
@@ -611,20 +629,23 @@ EbErrorType load_default_buffer_configuration_settings(
     scs_ptr->cdef_fifo_init_count                        = 300;
     scs_ptr->rest_fifo_init_count                        = 300;
     //#====================== Processes number ======================
-    scs_ptr->total_process_init_count                    = 0;
+    scs_ptr->total_process_init_count                    = 6; //single processes count
     if (core_count > 1){
-        scs_ptr->total_process_init_count += (scs_ptr->picture_analysis_process_init_count            = MAX(MIN(15, core_count >> 1), core_count / 6));
-        scs_ptr->total_process_init_count += (scs_ptr->motion_estimation_process_init_count =  MAX(MIN(20, core_count >> 1), core_count / 3));//1);//
-        scs_ptr->total_process_init_count += (scs_ptr->source_based_operations_process_init_count     = MAX(MIN(3, core_count >> 1), core_count / 12));
-        scs_ptr->total_process_init_count += (scs_ptr->mode_decision_configuration_process_init_count = MAX(MIN(3, core_count >> 1), core_count / 12));
-        scs_ptr->total_process_init_count += (scs_ptr->enc_dec_process_init_count                     = MAX(MIN(40, core_count >> 1), core_count));
-        scs_ptr->total_process_init_count += (scs_ptr->entropy_coding_process_init_count              = MAX(MIN(3, core_count >> 1), core_count / 12));
-        scs_ptr->total_process_init_count += (scs_ptr->dlf_process_init_count                         = MAX(MIN(40, core_count >> 1), core_count));
-        scs_ptr->total_process_init_count += (scs_ptr->cdef_process_init_count                        = MAX(MIN(40, core_count >> 1), core_count));
-        scs_ptr->total_process_init_count += (scs_ptr->rest_process_init_count                        = MAX(MIN(40, core_count >> 1), core_count));
-        if (core_count < (CONS_CORE_COUNT >> 2)) {
+        scs_ptr->total_process_init_count += (scs_ptr->picture_analysis_process_init_count            = thread_unit * 4);
+        scs_ptr->total_process_init_count += (scs_ptr->motion_estimation_process_init_count           = thread_unit * 8);
+        scs_ptr->total_process_init_count += (scs_ptr->source_based_operations_process_init_count     = thread_unit * 2);
+        scs_ptr->total_process_init_count += (scs_ptr->mode_decision_configuration_process_init_count = thread_unit * 2);
+        scs_ptr->total_process_init_count += (scs_ptr->entropy_coding_process_init_count              = thread_unit * 2);
 
-            scs_ptr->total_process_init_count += (scs_ptr->motion_estimation_process_init_count = MAX(core_count, MAX(MIN(20, core_count >> 1), core_count / 3)));
+        scs_ptr->enc_dec_process_init_count = scs_ptr->dlf_process_init_count = scs_ptr->cdef_process_init_count = scs_ptr->rest_process_init_count = (total_thread_count - scs_ptr->total_process_init_count) / 4;
+        scs_ptr->total_process_init_count += scs_ptr->enc_dec_process_init_count;
+        scs_ptr->total_process_init_count += scs_ptr->dlf_process_init_count;
+        scs_ptr->total_process_init_count += scs_ptr->cdef_process_init_count;
+        scs_ptr->total_process_init_count += scs_ptr->rest_process_init_count;
+        if (scs_ptr->total_process_init_count < total_thread_count)
+        {
+            scs_ptr->motion_estimation_process_init_count += total_thread_count - scs_ptr->total_process_init_count;
+            scs_ptr->total_process_init_count += total_thread_count - scs_ptr->total_process_init_count;
         }
     }else{
         scs_ptr->total_process_init_count += (scs_ptr->picture_analysis_process_init_count            = 1);
@@ -638,7 +659,6 @@ EbErrorType load_default_buffer_configuration_settings(
         scs_ptr->total_process_init_count += (scs_ptr->rest_process_init_count                        = 1);
     }
 
-    scs_ptr->total_process_init_count += 6; // single processes count
     SVT_LOG("Number of logical cores available: %u\nNumber of PPCS %u\n", core_count, scs_ptr->picture_control_set_pool_init_count);
 
     /******************************************************************
@@ -2240,6 +2260,7 @@ void copy_api_from_app(
     }
     scs_ptr->static_config.qp = ((EbSvtAv1EncConfiguration*)config_struct)->qp;
     scs_ptr->static_config.recon_enabled = ((EbSvtAv1EncConfiguration*)config_struct)->recon_enabled;
+    scs_ptr->static_config.thread_count = ((EbSvtAv1EncConfiguration*)config_struct)->thread_count;
 
     // Extract frame rate from Numerator and Denominator if not 0
     if (scs_ptr->static_config.frame_rate_numerator != 0 && scs_ptr->static_config.frame_rate_denominator != 0)

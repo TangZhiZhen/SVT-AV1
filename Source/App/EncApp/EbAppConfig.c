@@ -155,6 +155,7 @@
 #define UNPIN_TOKEN "-unpin"
 #define TARGET_SOCKET "-ss"
 #define UNRESTRICTED_MOTION_VECTOR "-umv"
+#define THREAD_COUNT "-thread-count"
 #define CONFIG_FILE_COMMENT_CHAR '#'
 #define CONFIG_FILE_NEWLINE_CHAR '\n'
 #define CONFIG_FILE_RETURN_CHAR '\r'
@@ -672,6 +673,9 @@ static void set_target_socket(const char *value, EbConfig *cfg) {
 };
 static void set_unrestricted_motion_vector(const char *value, EbConfig *cfg) {
     cfg->unrestricted_motion_vector = (EbBool)strtol(value, NULL, 0);
+};
+static void set_thread_count(const char *value, EbConfig *cfg) {
+    cfg->thread_count = (uint32_t)strtoul(value, NULL, 0);
 };
 
 static void set_square_weight(const char *value, EbConfig *cfg) {
@@ -1383,6 +1387,7 @@ ConfigEntry config_entry[] = {
     {SINGLE_INPUT, THREAD_MGMNT, "LogicalProcessors", set_logical_processors},
     {SINGLE_INPUT, UNPIN_TOKEN, "UnpinExecution", set_unpin_execution},
     {SINGLE_INPUT, TARGET_SOCKET, "TargetSocket", set_target_socket},
+    {SINGLE_INPUT, THREAD_COUNT, "ThreadCount", set_thread_count},
     // Optional Features
     {SINGLE_INPUT,
      UNRESTRICTED_MOTION_VECTOR,
@@ -1546,6 +1551,7 @@ void eb_config_ctor(EbConfig *config_ptr) {
     config_ptr->target_bit_rate     = 7000000;
     config_ptr->max_qp_allowed      = 63;
     config_ptr->min_qp_allowed      = 10;
+    config_ptr->thread_count        = 0;
 
     config_ptr->enable_adaptive_quantization              = 2;
     config_ptr->enc_mode                                  = MAX_ENC_PRESET;

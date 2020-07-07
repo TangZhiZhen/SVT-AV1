@@ -1933,7 +1933,7 @@ void md_sq_motion_search_controls(ModeDecisionContext *mdctxt, uint8_t md_sq_mv_
         md_sq_motion_search_ctrls->sparse_search_level_0_area_height      =  15;
         md_sq_motion_search_ctrls->max_sparse_search_level_0_area_width   = 150;
         md_sq_motion_search_ctrls->max_sparse_search_level_0_area_height  = 150;
-        md_sq_motion_search_ctrls->sparse_search_level_0_multiplier       =   1;
+        md_sq_motion_search_ctrls->sparse_search_level_0_multiplier       =   2;
 
         md_sq_motion_search_ctrls->sparse_search_level_1_enabled          =   1;
         md_sq_motion_search_ctrls->sparse_search_level_1_step             =   2;
@@ -1941,7 +1941,7 @@ void md_sq_motion_search_controls(ModeDecisionContext *mdctxt, uint8_t md_sq_mv_
         md_sq_motion_search_ctrls->sparse_search_level_1_area_height      =   4;
         md_sq_motion_search_ctrls->max_sparse_search_level_1_area_width   =  50;
         md_sq_motion_search_ctrls->max_sparse_search_level_1_area_height  =  50;
-        md_sq_motion_search_ctrls->sparse_search_level_1_multiplier       =   1;
+        md_sq_motion_search_ctrls->sparse_search_level_1_multiplier       =   2;
 
         md_sq_motion_search_ctrls->sparse_search_level_2_enabled          =   1;
         md_sq_motion_search_ctrls->sparse_search_level_2_step             =   1; 

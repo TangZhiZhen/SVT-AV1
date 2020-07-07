@@ -4934,7 +4934,7 @@ void inject_inter_candidates(PictureControlSet *pcs_ptr, ModeDecisionContext *co
 #else
         if (pcs_ptr->parent_pcs_ptr->gm_level <= GM_DOWN) {
 #endif
-#if 0//GLOBAL_SEARCH_ALL_REF
+#if GLOBAL_SEARCH_ALL_REF
 
 /**************
 GLOBALMV
